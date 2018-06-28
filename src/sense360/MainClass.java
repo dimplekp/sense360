@@ -86,9 +86,13 @@ public class MainClass {
 		System.out.println("=============================");
 		if (!queue.isEmpty()) {
 			UserStayInfo usi = queue.poll();
-			System.out
-					.println("Home location | latitude : " + usi.point.latitude
-							+ ", longitude : " + usi.point.longitude);
+			if (usi.totalHours < 30) {
+				System.out.println(
+						"Home location | latitude : " + usi.point.latitude
+								+ ", longitude : " + usi.point.longitude);
+			} else {
+				System.out.println("Home not found");
+			}
 		} else {
 			System.out.println("Home not found");
 		}

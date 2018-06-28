@@ -2,8 +2,8 @@ package sense360;
 
 public class UserStayInfo {
 	Point point;
-	long totalHours;
-	long nightHours;
+	int totalHours;
+	int nightHours;
 
 	public UserStayInfo(Point point) {
 		this.point = point;

@@ -32,9 +32,6 @@ public class MainClass {
 
 		Map<Point, UserStayInfo> stayCount = new HashMap<>();
 
-		PriorityQueue<UserStayInfo> queue = new PriorityQueue<>(
-				new QueueComparator());
-
 		for (String line : input) {
 			try {
 				String tokens[] = line.split("\\|");
@@ -42,8 +39,11 @@ public class MainClass {
 				// Round off latitude and longitude to 3 decimal places
 				// to consider coordinates to 3 decimal places as same
 				// coordinates
-				double latitude = Double.parseDouble(tokens[0].trim());
-				double longitude = Double.parseDouble(tokens[1].trim());
+
+				double latitude = Math.round(
+						Double.parseDouble((tokens[0].trim())) * 1000d) / 1000d;
+				double longitude = Math.round(
+						Double.parseDouble((tokens[1].trim())) * 1000d) / 1000d;
 
 				LocalDateTime arriveTime = LocalDateTime.parse(tokens[2].trim(),
 						dtf);
@@ -74,28 +74,31 @@ public class MainClass {
 			}
 		}
 
+		int maxNightHours = 0, maxTotalHours = 0;
+		UserStayInfo usi = null;
+
 		Iterator<Entry<Point, UserStayInfo>> it = stayCount.entrySet()
 				.iterator();
 		while (it.hasNext()) {
 			Map.Entry<Point, UserStayInfo> pair = (Entry<Point, UserStayInfo>) it
 					.next();
-			queue.add(pair.getValue());
+			if (pair.getValue().nightHours > maxNightHours
+					|| (pair.getValue().nightHours == maxNightHours
+							&& pair.getValue().totalHours > maxTotalHours)) {
+				maxNightHours = (int) pair.getValue().nightHours;
+				maxTotalHours = (int) pair.getValue().totalHours;
+				usi = pair.getValue();
+			}
 			it.remove();
 		}
 
 		System.out.println("=============================");
-		if (!queue.isEmpty()) {
-			UserStayInfo usi = queue.poll();
-			if (usi.totalHours < 30) {
-				System.out.println(
-						"Home location | latitude : " + usi.point.latitude
-								+ ", longitude : " + usi.point.longitude);
-			} else {
-				System.out.println("Home not found");
-			}
-		} else {
+		if (usi == null)
 			System.out.println("Home not found");
-		}
+		else
+			System.out
+					.println("Home location | latitude : " + usi.point.latitude
+							+ ", longitude : " + usi.point.longitude);
 	}
 
 	private static long withinIntervalAtNight(LocalDateTime arriveTime,

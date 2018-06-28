@@ -1,0 +1,56 @@
+Home Algorithm
+
+Expected length:
+--------
+~ 4-6 hours (You are allowed to work as long as you'd like)
+
+
+Goal:
+--------
+Create a function that implements the specified algorithm below that will determine a user's home location from their past visit data.
+
+
+Background:
+--------
+Our system records user visits. A "visit" is any place a user travels to. Visit data contains where the user went (latitude/longitude), the date/time they arrived and the date/time they departed. We use this visit data to determine the users home location. Any latitude/longitude coordinates that have the same coordinates to 3 decimal places are considered the same location.
+
+
+Algorithm:
+--------
+
+To determine the user's home location, we want to take the location that the user has spent the most number of minutes at between 8pm and 8am. In addition to this, the user must have spent a minimum of 30 hours at this location between 8pm and 8am.
+
+
+API:
+--------
+You must have a single entry point function that takes in a list of "visits" and returns the home location. You are free to choose how to represent a "visit" in your language of choice. You are also free to choose how to represent the return value from the function. As a consumer of this API, I should be able to pass a list of "visits" to the function (in the format you choose) and get back the home location (not printed to screen).
+
+Each visit has the following fields:
+
+latitude: float (e.g. 45.12345)
+longitude: float (e.g. -118.12345)
+arrival_time_local: datetime (e.g. 5/30/2015 10:12:35)
+departure_time_local: datetime (e.g. 5/30/2015 18:12:35)
+
+You can assume that all visit windows are non-overlapping and are of arbitrary length. You can assume all values in the fields are valid and well-formed. You do not need to worry about timezones for the dates.
+
+
+Output:
+--------
+If a location meets the criteria above, return the latitude and longitude of that location. If no locations qualify, then pick a suitable return value.
+ 
+
+Instructions:
+--------
+- This is to be completed by yourself
+- You are allowed to use your language and IDE of choice
+- If you use any external code, please give credit
+- Tell us where the entry point function can be found
+- You should submit:
+-- code for algorithm
+-- any assumptions you made
+-- any explanation or instructions you feel that are necessary.
+- You can submit via Github, BitBucket or email
+
+
+

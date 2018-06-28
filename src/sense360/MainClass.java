@@ -37,28 +37,23 @@ public class MainClass {
 
 		for (String line : input) {
 			try {
-				String tokens[] = line.split("|");
+				String tokens[] = line.split("\\|");
 
 				// Round off latitude and longitude to 3 decimal places
 				// to consider coordinates to 3 decimal places as same
 				// coordinates
-				double latitude = Math.round(
-						Double.parseDouble((tokens[0].trim())) * 1000d) / 1000d;
-				double longitude = Math.round(
-						Double.parseDouble((tokens[1].trim())) * 1000d) / 1000d;
+				double latitude = Double.parseDouble(tokens[0].trim());
+				double longitude = Double.parseDouble(tokens[1].trim());
 
 				LocalDateTime arriveTime = LocalDateTime.parse(tokens[2].trim(),
 						dtf);
 				LocalDateTime departTime = LocalDateTime.parse(tokens[3].trim(),
 						dtf);
-
-				System.out.println(latitude + " " + longitude);
-
 				if (departTime.isBefore(arriveTime)) {
 					System.out.println("[Ignored] " + arriveTime.toString()
 							+ " - " + departTime.toString()
 							+ " : Incorrect sequence of arrival and departure DATE-TIME");
-					break;
+					continue;
 				}
 
 				Point p = new Point(latitude, longitude);
@@ -74,8 +69,8 @@ public class MainClass {
 						departTime);
 				stayCount.get(p).totalHours += hours;
 			} catch (Exception e) {
-				// System.out.println(e.getMessage());
-				// e.printStackTrace();
+				System.out.println(e.getMessage());
+				continue;
 			}
 		}
 
@@ -88,12 +83,15 @@ public class MainClass {
 			it.remove();
 		}
 
-		while (!queue.isEmpty()) {
+		System.out.println("=============================");
+		if (!queue.isEmpty()) {
 			UserStayInfo usi = queue.poll();
-			System.out.println(usi.point.latitude + " | " + usi.point.longitude
-					+ " | " + usi.nightHours);
+			System.out
+					.println("Home location | latitude : " + usi.point.latitude
+							+ ", longitude : " + usi.point.longitude);
+		} else {
+			System.out.println("Home not found");
 		}
-
 	}
 
 	private static long withinIntervalAtNight(LocalDateTime arriveTime,
@@ -110,7 +108,7 @@ public class MainClass {
 
 	private static List<String> readInput() {
 		List<String> lines = new ArrayList<String>();
-		String fileName = "sources/tests.txt";
+		String fileName = "/Users/dimple/Desktop/tests.txt";
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 			stream.forEach(lines::add);
 		} catch (IOException e) {
